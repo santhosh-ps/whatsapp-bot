@@ -23,7 +23,7 @@ class EchoLayer(YowInterfaceLayer):
                 posts = response.get('hits')
                 msg='*Hacker News For the day* \n\n'
                 for post in posts:
-                    msg+=''+post.get('title')+'\n'+'points : '+str(post.get('points'))+'\n\n Url : '+post.get('url')+'\n ------------------------------------------------- \n\n'
+                    msg+=''+post.get('title')+'\n'+'*points :* '+str(post.get('points'))+'\n\n Url : '+post.get('url')+'\n ------------------------------------------------- \n\n'
             receipt = OutgoingReceiptProtocolEntity(messageProtocolEntity.getId(),messageProtocolEntity.getFrom(), 'read', messageProtocolEntity.getParticipant())
             outgoingMessageProtocolEntity = TextMessageProtocolEntity(
                 msg,
