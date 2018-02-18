@@ -4,11 +4,10 @@ from yowsup.layers.auth import AuthError
 from yowsup.layers import YowLayerEvent
 from yowsup.layers.network import YowNetworkLayer
 from yowsup.env import YowsupEnv
-from pathlib import Path
 from dotenv import load_dotenv
 import os
-
-envPath = str(Path.home()) + '/whatsappbot.env'
+from os.path import expanduser
+envPath = str(expanduser("~")) + '/whatsappbot.env'
 print(envPath)
 load_dotenv(envPath)
 
