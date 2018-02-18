@@ -1,0 +1,3 @@
+requests==2.11.1
+yowsup2==2.5.7
+python-dotenv==0.7.1
