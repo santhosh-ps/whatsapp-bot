@@ -13,20 +13,19 @@ class EchoLayer(YowInterfaceLayer):
        if messageProtocolEntity.getType() == 'media':
           self.sendMsg(messageProtocolEntity,"")
        else:
-            incomingMsg = messageProtocolEntity.getBody()
+            incomingMsg = messageProtocolEntity.getBody().strip().lower()
             sender = messageProtocolEntity.getFrom()
             print(sender+" says "+incomingMsg)
-            if  incomingMsg== "hn" or incomingMsg == "Hn" or incomingMsg == "HN":
+            if  incomingMsg== "hn":
                 payload = {'tags':'front_page'}
                 r = requests.get(self.hnApi,params=payload)
-                response = r.json()
-                if r.status_code == 500:
-                    msg = response.get('error')
-                else:
-                    posts = response.get('hits')
-                    msg='*Hacker News For the day* \n\n'
-                    for post in posts:
-                        msg+=''+post.get('title')+'\n'+'*points :* '+str(post.get('points'))+'\n\n Url : '+post.get('url')+'\n ------------------------------------------------- \n\n'
+                msg = self.getMsgFromPosts(r)
+                self.sendMsg(messageProtocolEntity,msg)
+            elif incomingMsg.startswith("hn ") and len(incomingMsg)>3:
+                searchTerm = incomingMsg.split("hn ",1)[1]
+                payload= {"query":searchTerm,"tags":"story"}
+                r = requests.get(self.hnApi,params=payload)
+                msg = self.getMsgFromPosts(r,searchTerm)
                 self.sendMsg(messageProtocolEntity,msg)
             else:
                 self.sendMsg(messageProtocolEntity,"")
@@ -42,7 +41,7 @@ class EchoLayer(YowInterfaceLayer):
          messageProtocolEntity.getFrom(), 'read', messageProtocolEntity.getParticipant())
         if message=="":
             outgoingMessageProtocolEntity = TextMessageProtocolEntity(
-                    "Welcome to hacker news bot, try sending 'hn' for *hacker-news*",
+                    "Welcome to hacker news bot, try sending *_hn_* for *hacker-news for the day*\n To search hackernews try sending *_hn<space><search-keyword>_*",
                 to = messageProtocolEntity.getFrom())
         else:
             outgoingMessageProtocolEntity = TextMessageProtocolEntity(
@@ -50,3 +49,18 @@ class EchoLayer(YowInterfaceLayer):
                 to = messageProtocolEntity.getFrom())
         self.toLower(receipt)
         self.toLower(outgoingMessageProtocolEntity)
+
+    def getMsgFromPosts(self,r,type="normal"):
+        response = r.json()
+        if r.status_code == 500:
+            msg = response.get('error')
+        else:
+            posts = response.get('hits')
+            msg='*Hacker News For the day* \n\n'
+            if type!="normal":
+                msg='*Hacker News search results for _'+type+'_:* \n\n'
+            for post in posts:
+                rTitle = post.get('_highlightResult').get('title').get("value").replace("<em>","*").replace("</em>","*")
+                #print(rTitle)
+                msg+=str(rTitle)+'\n\n*points :* '+str(post.get('points'))+'\n\n Url : '+str(post.get('url'))+'\n ------------------------------------------------- \n\n'
+        return msg
