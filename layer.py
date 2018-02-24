@@ -73,7 +73,7 @@ class EchoLayer(YowInterfaceLayer):
     def getMsgForBottles(self,term):
         term = term.upper()
         searchBottles = self.bevco.getBottlesByName(term)
-        msg = "🍺 *Bevco Price List for your _"+term+"_:* \n\n"
+        msg = "🍺 *Bevco Price List for _"+term+"_:* \n\n"
         if len(searchBottles) is 0:
             msg = "No bottles found.."
             return msg
