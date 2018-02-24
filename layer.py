@@ -46,7 +46,7 @@ class EchoLayer(YowInterfaceLayer):
          messageProtocolEntity.getFrom(), 'read', messageProtocolEntity.getParticipant())
         if message=="":
             outgoingMessageProtocolEntity = TextMessageProtocolEntity(
-                "Welcome to hacker news bot, try sending *_hn_* for *hacker-news for the day*\n To search hackernews try sending *_hn<space><search-keyword>_* \n\nOn another note, search Kerala beverages for all available brands and prices \n *bevco<space><brand-name/type>* 😉🍻🍻 ",
+                "Welcome to hacker news bot, try sending *_hn_* for *hacker-news for the day*\n To search hackernews try sending *_hn<space><search-keyword>_* \n\nOn another note, search Kerala beverages for all available brands and prices \n *bevco<space><brand-name/type>* 😉🍻🍻 \n ex:\n 1. *hn* \n 2. *hn javascript* \n 3. *bevco beer* \n 4. *bevco 8 pm*",
                 to = messageProtocolEntity.getFrom())
         else:
             outgoingMessageProtocolEntity = TextMessageProtocolEntity(
