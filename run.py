@@ -3,7 +3,6 @@ from layer import EchoLayer
 from yowsup.layers.auth import AuthError
 from yowsup.layers import YowLayerEvent
 from yowsup.layers.network import YowNetworkLayer
-from yowsup.env import YowsupEnv
 from dotenv import load_dotenv
 import os
 from os.path import expanduser
